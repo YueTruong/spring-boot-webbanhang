@@ -26,12 +26,12 @@ public class OrderController {
     }
 
     @PostMapping("/submit")
-    public String submitOrder(String customerName) {
+    public String submitOrder(String customerName, String customerAddress, String customerPhone, String customerEmail, String customerNote, String customerPayment) {
         List<CartItem> cartItems = cartService.getCartItems();
         if (cartItems.isEmpty()) {
             return "redirect:/cart";
         }
-        orderService.createOrder(customerName, cartItems);
+        orderService.createOrder(customerName, customerAddress, customerPhone, customerEmail, customerNote, customerPayment, cartItems);
         return "redirect:/order/confirmation";
     }
 
@@ -40,4 +40,16 @@ public class OrderController {
         model.addAttribute("message", "Your order has been successfully placed.");
         return "cart/order-confirmation";
     }
+
+    @GetMapping("/list")
+    public String showOrders(Model model) {
+        model.addAttribute("orders", orderService.getAllOrdersWithDetails());
+        return "cart/orders-list";
+    }
+
+//    @PostMapping("/orders")
+//    public String showOrders(Model model) {
+//        model.addAttribute("orders",orderService.getAllOrders());
+//        return "cart/orders-list";
+//    }
 }

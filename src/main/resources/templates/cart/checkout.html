@@ -9,8 +9,30 @@
         <h1>Place Your Order</h1>
         <form th:action="@{/order/submit}" method="post">
             <div class="mb-3">
-                <label for="customerName" class="form-label">Your Name:</label>
+                <label for="customerName" class="form-label"><b>Your Name:</b></label>
                 <input type="text" id="customerName" name="customerName" class="form-control" required>
+
+                <label for="customerAddress" class="form-label"><b>Your Address:</b></label>
+                <input type="text" id="customerAddress" name="customerAddress" class="form-control" required>
+
+                <label for="customerPhone" class="form-label"><b>Your Phone Number:</b></label>
+                <input type="text" id="customerPhone" name="customerPhone" class="form-control" required>
+
+                <label for="customerEmail" class="form-label"><b>Your Email:</b></label>
+<!--                <input type="text" id="customerEmail" name="customerEmail" class="form-control" required>-->
+                <input type="email" name="customerEmail" id="customerEmail" class="form-control" required>
+
+                <label for="customerNote" class="form-label"><b>Your Note:</b></label><br>
+<!--                <input type="text" id="customerNote" name="customerNote" class="form-control" required>-->
+                <textarea id="customerNote" name="customerNote" cols="30" rows="5" class="form-control"></textarea>
+
+                <label for="customerPayment" class="form-label"><b>Your Payment Method:</b></label>
+<!--                <input type="text" id="customerPayment" name="customerPayment" class="form-control" required>-->
+                <select name="customerPayment" id="customerPayment" class="form-control" required>
+                    <option value="cash">Cash</option>
+                    <option value="card">Visa/MasterCard</option>
+                    <option value="paypal">PayPal</option>
+                </select>
             </div>
             <button type="submit" class="btn btn-primary">Submit Order</button>
         </form>

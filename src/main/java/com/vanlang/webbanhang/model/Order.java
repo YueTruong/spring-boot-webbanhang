@@ -16,6 +16,11 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String customerName;
+    private String customerAddress;
+    private String customerPhone;
+    private String customerEmail;
+    private String customerNote;
+    private String customerPayment;
 
     @OneToMany(mappedBy = "order")
     private List<OrderDetail> orderDetails;

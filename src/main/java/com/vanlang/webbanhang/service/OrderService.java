@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,9 +26,14 @@ public class OrderService {
     private CartService cartService;
 
     @Transactional
-    public Order createOrder(String customerName, List<CartItem> cartItems) {
+    public Order createOrder(String customerName, String customerAddress, String customerPhone, String customerEmail, String customerNote, String customerPayment, List<CartItem> cartItems) {
         Order order = new Order();
         order.setCustomerName(customerName);
+        order.setCustomerAddress(customerAddress);
+        order.setCustomerPhone(customerPhone);
+        order.setCustomerEmail(customerEmail);
+        order.setCustomerNote(customerNote);
+        order.setCustomerPayment(customerPayment);
         order = orderRepository.save(order);
         for (CartItem item : cartItems) {
             OrderDetail detail = new OrderDetail();
@@ -37,5 +44,22 @@ public class OrderService {
         }
         cartService.clearCart();
         return order;
+    }
+
+//    public List<Order> getAllOrders() {
+//        return orderRepository.findAll();
+//    }
+
+//    public Optional<Order> getOrderById(Long id) {
+//        return orderRepository.findById(id);
+//    }
+
+    public List<Order> getAllOrdersWithDetails() {
+        List<Order> orders = orderRepository.findAll();
+        for (Order order : orders) {
+            List<OrderDetail> details = orderDetailRepository.findByOrder(order);
+            order.setOrderDetails(details);
+        }
+        return orders;
     }
 }
