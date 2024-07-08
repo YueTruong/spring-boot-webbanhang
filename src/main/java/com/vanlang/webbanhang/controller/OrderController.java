@@ -41,11 +41,16 @@ public class OrderController {
         return "cart/order-confirmation";
     }
 
-    @GetMapping("/list")
+    @GetMapping("/all orders")
     public String showOrders(Model model) {
         model.addAttribute("orders", orderService.getAllOrdersWithDetails());
         return "cart/orders-list";
     }
+
+//    @GetMapping("/your order")
+//    public String showYourOrder(Model model) {
+//        model.addAttribute("order", orderService.)
+//    }
 
 //    @PostMapping("/orders")
 //    public String showOrders(Model model) {

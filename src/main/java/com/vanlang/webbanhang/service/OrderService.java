@@ -62,4 +62,8 @@ public class OrderService {
         }
         return orders;
     }
+
+//    public Optional<Order> getOrderWithDetails() {
+//        Optional<Order> order = orderRepository.findById(id);
+//    }
 }
