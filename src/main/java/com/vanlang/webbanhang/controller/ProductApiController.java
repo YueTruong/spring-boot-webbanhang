@@ -37,6 +37,7 @@ public class ProductApiController {
         product.setName(productDetails.getName());
         product.setPrice(productDetails.getPrice());
         product.setDescription(productDetails.getDescription());
+        product.setCategory(productDetails.getCategory());
         final Product updatedProduct = productService.addProduct(product);
         return ResponseEntity.ok(updatedProduct);
     }

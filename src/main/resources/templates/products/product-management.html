@@ -16,6 +16,7 @@
             <th>Name</th>
             <th>Price</th>
             <th>Description</th>
+            <th>Category</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -35,6 +36,10 @@
             <label for="description" class="form-label">Description:</label>
             <input type="text" class="form-control" id="description">
         </div>
+        <div class="mb-3">
+            <label for="category" class="form-label">Category:</label>
+            <input type="text" class="form-control" id="category">
+        </div>
         <button type="submit" class="btn btn-success">Save Product</button>
     </form>
 </div>
@@ -52,60 +57,74 @@
             url: '/api/products', type: 'GET', success: function (products) {
                 let productList = '';
                 $.each(products, function (index, product) {
-                    productList += `<tr> <td>${product.id}</td> <td>${product.name}</td> <td>${product.price}</td> <td>${product.description}</td> <td> <button onclick="editProduct(${product.id})" class="btn btn-warning">Edit</button> <button onclick="deleteProduct(${product.id})" class="btn btn-danger">Delete</button> </td> </tr>`;
+                    productList += `
+                    <tr>
+                        <td>${product.id}</td>
+                        <td>${product.name}</td>
+                        <td>${product.price}</td>
+                        <td>${product.description}</td>
+                        <td>${product.category.name}</td>
+                        <td>
+                            <button onclick="editProduct(${product.id})" class="btn btn-warning">Edit</button>
+                            <button onclick="deleteProduct(${product.id})" class="btn btn-danger">Delete</button>
+                        </td>
+                    </tr>`;
                 });
                 $('#productList').html(productList);
             }
         });
     }
 
-function saveProduct() {
-    const productData = {
-        id: $('#productId').val(),
-        name: $('#name').val(),
-        price: $('#price').val(),
-        description: $('#description').val()
-    };
-    const apiUrl = productData.id ? `/api/products/${productData.id}` : '/api/products';
-    const apiType = productData.id ? 'PUT' : 'POST';
-    $.ajax({
-        url: apiUrl,
-        type: apiType,
-        contentType: 'application/json',
-        data: JSON.stringify(productData),
-        success: function () {
-            resetForm();
-            loadProducts();
-        }
-    });
-}
-
-function editProduct(id) {
-    $.ajax({
-        url: `/api/products/${id}`, type: 'GET', success: function (product) {
-            $('#productId').val(product.id);
-            $('#name').val(product.name);
-            $('#price').val(product.price);
-            $('#description').val(product.description);
-        }
-    });
-}
-
-function deleteProduct(id) {
-    if (confirm('Are you sure you want to delete this product?')) {
+    function saveProduct() {
+        const productData = {
+            id: $('#productId').val(),
+            name: $('#name').val(),
+            price: $('#price').val(),
+            description: $('#description').val()
+        };
+        const apiUrl = productData.id ? `/api/products/${productData.id}` : '/api/products';
+        const apiType = productData.id ? 'PUT' : 'POST';
         $.ajax({
-            url: `/api/products/${id}`, type: 'DELETE', success: function() {
+            url: apiUrl,
+            type: apiType,
+            contentType: 'application/json',
+            data: JSON.stringify(productData),
+            success: function () {
+                resetForm();
                 loadProducts();
             }
         });
     }
-}
 
-function resetForm() {
-    $('#productId').val('');
-    $('#name').val('');
-    $('#price').val('');
-    $('#description').val('');
-} </script>
+    function editProduct(id) {
+        $.ajax({
+            url: `/api/products/${id}`, type: 'GET', success: function (product) {
+                $('#productId').val(product.id);
+                $('#name').val(product.name);
+                $('#price').val(product.price);
+                $('#description').val(product.description);
+                $('#category').val(product.category.name);
+            }
+        });
+    }
+
+    function deleteProduct(id) {
+        if (confirm('Are you sure you want to delete this product?')) {
+            $.ajax({
+                url: `/api/products/${id}`, type: 'DELETE', success: function() {
+                    loadProducts();
+                }
+            });
+        }
+    }
+
+    function resetForm() {
+        $('#productId').val('');
+        $('#name').val('');
+        $('#price').val('');
+        $('#description').val('');
+        $('#category').val('');
+    }
+</script>
 </body>
 </html>
